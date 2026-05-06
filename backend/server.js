@@ -3,33 +3,33 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-const productRoutes = require("./routes/productRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const authRoutes = require("./routes/authRoutes");
-
 const app = express();
 
-// ✅ Middleware
+/* MIDDLEWARE */
 app.use(cors());
 app.use(express.json());
 
-// ✅ Routes
+/* ROUTES */
+const productRoutes = require("./routes/productRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const userRoutes = require("./routes/userRoutes");
+
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
-// ✅ Test route
+/* TEST */
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("API running...");
 });
 
-// ✅ MongoDB connection
+/* DB CONNECT */
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
-// ✅ Start server
+/* SERVER */
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
