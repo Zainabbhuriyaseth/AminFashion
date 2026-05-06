@@ -12,6 +12,9 @@ export default function ProductCard({ product }) {
         <img
           src={product.image}
           alt={product.name}
+          onError={(e) => {
+            e.target.src = "https://via.placeholder.com/300x300?text=No+Image";
+          }}
           className="w-full h-[250px] object-cover group-hover:scale-110 transition duration-500"
         />
       </div>
