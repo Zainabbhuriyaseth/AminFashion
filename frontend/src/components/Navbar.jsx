@@ -1,21 +1,20 @@
+import { Link } from "react-router-dom";
+import { FaShoppingCart, FaUser, FaSearch } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const [darkMode, setDarkMode] = useState(true);
 
-  // Load saved theme
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "light") {
       setDarkMode(false);
       document.documentElement.classList.remove("dark");
     } else {
-      setDarkMode(true);
       document.documentElement.classList.add("dark");
     }
   }, []);
 
-  // Toggle theme
   const toggleTheme = () => {
     if (darkMode) {
       document.documentElement.classList.remove("dark");
@@ -28,35 +27,58 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="w-full px-6 py-4 flex justify-between items-center 
-    bg-white dark:bg-black text-black dark:text-white shadow-md">
+    <nav className="w-full px-8 py-5 flex justify-between items-center 
+    bg-white dark:bg-black text-black dark:text-white 
+    border-b border-gray-200 dark:border-gray-800 
+    sticky top-0 z-50">
 
-      {/* Logo */}
-      <h1 className="text-2xl font-bold tracking-wide text-gold">
-        Amin Fashion
-      </h1>
+      {/* LEFT - Logo */}
+      <Link
+        to="/"
+        className="text-2xl tracking-widest font-semibold text-gold"
+      >
+        AMIN FASHION
+      </Link>
 
-      {/* Menu */}
-      <ul className="hidden md:flex gap-8 font-medium">
-        <li className="hover:text-gold cursor-pointer">Home</li>
-        <li className="hover:text-gold cursor-pointer">Shop</li>
-        <li className="hover:text-gold cursor-pointer">About</li>
-        <li className="hover:text-gold cursor-pointer">Contact</li>
+      {/* CENTER - Menu */}
+      <ul className="hidden md:flex gap-10 text-sm tracking-wide">
+
+        <li className="group cursor-pointer">
+          <Link to="/">HOME</Link>
+          <div className="h-[1px] bg-gold scale-x-0 group-hover:scale-x-100 transition origin-left"></div>
+        </li>
+
+        <li className="group cursor-pointer">
+          <Link to="/shop">SHOP</Link>
+          <div className="h-[1px] bg-gold scale-x-0 group-hover:scale-x-100 transition origin-left"></div>
+        </li>
+
+        <li className="group cursor-pointer">
+          <span>ABOUT</span>
+          <div className="h-[1px] bg-gold scale-x-0 group-hover:scale-x-100 transition origin-left"></div>
+        </li>
+
       </ul>
 
-      {/* Right Icons */}
-      <div className="flex items-center gap-4">
+      {/* RIGHT - Icons */}
+      <div className="flex items-center gap-6 text-lg">
+
+        <FaSearch className="cursor-pointer hover:text-gold transition" />
+
+        <FaUser className="cursor-pointer hover:text-gold transition" />
+
+        <Link to="/cart">
+          <FaShoppingCart className="cursor-pointer hover:text-gold transition" />
+        </Link>
 
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
-          className="border px-3 py-1 rounded hover:bg-gold hover:text-black transition"
+          className="text-xs border px-3 py-1 rounded-full hover:bg-gold hover:text-black transition"
         >
-          {darkMode ? "Light" : "Dark"}
+          {darkMode ? "LIGHT" : "DARK"}
         </button>
 
-        {/* Cart Icon */}
-        <span className="cursor-pointer">🛒</span>
       </div>
     </nav>
   );

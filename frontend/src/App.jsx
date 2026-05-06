@@ -1,13 +1,20 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Categories from "./components/Categories";
+
+import Home from "./pages/Home";
+import Shop from "./pages/Shop";
+import Cart from "./pages/Cart";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white dark:bg-black transition duration-300">
+    <Router>
       <Navbar />
-      <Hero />
-      <Categories />
-    </div>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/cart" element={<Cart />} />
+      </Routes>
+    </Router>
   );
 }
