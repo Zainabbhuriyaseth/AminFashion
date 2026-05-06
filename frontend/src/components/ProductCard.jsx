@@ -1,55 +1,37 @@
-import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 export default function ProductCard({ product }) {
-  const { addToCart } = useCart();
   const navigate = useNavigate();
-
-  const handleNavigate = () => {
-    navigate(`/product/${product._id}`);
-  };
+  const { addToCart } = useCart();
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md hover:shadow-xl transition overflow-hidden group">
+    <div className="bg-white dark:bg-[#0c0c0c] rounded-lg overflow-hidden shadow hover:shadow-xl transition">
 
-      {/* Clickable Image */}
+      {/* IMAGE */}
       <div
-        className="overflow-hidden cursor-pointer"
-        onClick={handleNavigate}
+        onClick={() => navigate(`/product/${product._id}`)}
+        className="cursor-pointer overflow-hidden"
       >
         <img
           src={product.image}
           alt={product.name}
-          onError={(e) => {
-            e.target.src =
-              "https://via.placeholder.com/300x300?text=No+Image";
-          }}
-          className="w-full h-[250px] object-cover group-hover:scale-110 transition duration-500"
+          className="w-full h-72 object-cover hover:scale-105 transition"
         />
       </div>
 
-      {/* Details */}
-      <div className="p-4 space-y-2">
+      {/* CONTENT */}
+      <div className="p-4">
 
-        {/* Clickable Title */}
-        <h3
-          onClick={handleNavigate}
-          className="text-lg font-semibold cursor-pointer hover:text-gold transition"
-        >
-          {product.name}
-        </h3>
+        <h3 className="font-medium">{product.name}</h3>
 
-        {/* Price */}
-        <p className="text-gold font-bold text-lg">
-          ₹{product.price}
-        </p>
+        <p className="text-gold mt-1">₹{product.price}</p>
 
-        {/* Add to Cart */}
         <button
           onClick={() => addToCart(product)}
-          className="w-full mt-2 bg-black text-white dark:bg-gold dark:text-black py-2 rounded hover:scale-105 transition"
+          className="w-full mt-3 bg-black text-white dark:bg-gold dark:text-black py-2 rounded hover:scale-105 transition"
         >
-          Add to Cart
+          ADD TO CART
         </button>
 
       </div>

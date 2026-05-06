@@ -1,72 +1,41 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
-/* Components */
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
-/* Pages */
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
-import ProductDetails from "./pages/ProductDetails";
-import Checkout from "./pages/Checkout";
-import OrderSuccess from "./pages/OrderSuccess";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
-/* Context */
-import { CartProvider } from "./context/CartContext";
-import { AuthProvider } from "./context/AuthContext";
+import Profile from "./pages/Profile";
+import Checkout from "./pages/Checkout";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
 
   return (
     <Router>
-      <AuthProvider>
-        <CartProvider>
-          
-          {/* DARK MODE WRAPPER */}
-          <div className={darkMode ? "dark" : ""}>
+      <div className={darkMode ? "dark" : ""}>
 
-            {/* MAIN BACKGROUND */}
-            <div className="bg-white dark:bg-black min-h-screen text-black dark:text-white transition">
+        {/* ✅ ONLY ONE NAVBAR */}
+        <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
 
-              {/* NAVBAR */}
-              <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-
-              {/* ROUTES */}
-              <Routes>
-
-                {/* HOME */}
-                <Route path="/" element={<Home />} />
-
-                {/* SHOP */}
-                <Route path="/shop" element={<Shop />} />
-
-                {/* PRODUCT DETAILS */}
-                <Route path="/product/:id" element={<ProductDetails />} />
-
-                {/* CART */}
-                <Route path="/cart" element={<Cart />} />
-
-                {/* CHECKOUT */}
-                <Route path="/checkout" element={<Checkout />} />
-
-                {/* SUCCESS */}
-                <Route path="/success" element={<OrderSuccess />} />
-
-                {/* AUTH */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-
-              </Routes>
-
-            </div>
-          </div>
-
-        </CartProvider>
-      </AuthProvider>
+        {/* MAIN CONTENT */}
+        <main className="min-h-screen">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        <Footer />
+        </main>
+      </div>
     </Router>
   );
-}n
+}
