@@ -1,11 +1,13 @@
-function App() {
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Categories from "./components/Categories";
+
+export default function App() {
   return (
-    <div className="bg-black text-white min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-gold">
-        Amin Fashion 🚀
-      </h1>
+    <div className="min-h-screen bg-white dark:bg-black transition duration-300">
+      <Navbar />
+      <Hero />
+      <Categories />
     </div>
   );
 }
-
-export default App;
