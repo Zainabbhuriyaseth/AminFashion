@@ -2,11 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import BASE_URL from "../api";
+import { useAuth } from "../context/AuthContext";
 
 export default function Checkout() {
   const { cart, clearCart } = useCart();
   const navigate = useNavigate();
-
+  const { user } = useAuth();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,47 +17,51 @@ export default function Checkout() {
     0
   );
 
-  const handleOrder = async () => {
-  if (!name || !address) {
-    alert("Please fill all details");
-    return;
+  if (!user) {
+    return <h1>Please login first</h1>;
   }
 
-  setLoading(true);
-
-  try {
-    const res = await fetch(`${BASE_URL}/orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        address,
-        items: cart,
-        total,
-      }),
-    });
-
-    const data = await res.json();
-
-    console.log("STATUS:", res.status);
-    console.log("DATA:", data);
-
-    if (res.ok) {
-      clearCart();
-      navigate("/success");
-    } else {
-      alert(data.error || "Order failed");
+  const handleOrder = async () => {
+    if (!name || !address) {
+      alert("Please fill all details");
+      return;
     }
 
-  } catch (err) {
-    console.log("ERROR:", err);
-    alert("Something went wrong");
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${BASE_URL}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          address,
+          items: cart,
+          total,
+        }),
+      });
+
+      const data = await res.json();
+
+      console.log("STATUS:", res.status);
+      console.log("DATA:", data);
+
+      if (res.ok) {
+        clearCart();
+        navigate("/success");
+      } else {
+        alert(data.error || "Order failed");
+      }
+
+    } catch (err) {
+      console.log("ERROR:", err);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white px-4 md:px-16 py-10">
