@@ -3,15 +3,18 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+const productRoutes = require("./routes/productRoutes");
+const orderRoutes = require("./routes/orderRoutes"); // ✅ FIXED
+
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-const productRoutes = require("./routes/productRoutes");
-// Use routes
+// Routes
 app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Test route
 app.get("/", (req, res) => {
@@ -19,7 +22,8 @@ app.get("/", (req, res) => {
 });
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
