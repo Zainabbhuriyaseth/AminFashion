@@ -9,6 +9,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const productRoutes = require("./routes/productRoutes");
+// Use routes
+app.use("/api/products", productRoutes);
+
 // Test route
 app.get("/", (req, res) => {
   res.send("API is running...");
