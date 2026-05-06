@@ -8,21 +8,25 @@ export default function FeaturedProducts() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`${BASE_URL}/products`)
-      .then((res) => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/products`);
+
         if (!res.ok) {
           throw new Error("Failed to fetch products");
         }
-        return res.json();
-      })
-      .then((data) => {
+
+        const data = await res.json();
+
         setProducts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         setError(err.message);
-        setLoading(false);
-      });
+      } finally {
+        setLoading(false); // ✅ ALWAYS runs
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   return (
@@ -32,17 +36,19 @@ export default function FeaturedProducts() {
         Featured <span className="text-gold">Products</span>
       </h2>
 
-      {/* 🟡 Loading */}
-      <div className="flex justify-center">
-        <div className="w-10 h-10 border-4 border-gold border-t-transparent rounded-full animate-spin"></div>
-      </div>
+      {/* Loading */}
+      {loading && (
+        <div className="flex justify-center py-10">
+          <div className="w-10 h-10 border-4 border-gold border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
 
-      {/* 🔴 Error */}
-      {error && (
+      {/* Error */}
+      {!loading && error && (
         <div className="text-center text-red-500">{error}</div>
       )}
 
-      {/* 🟢 Products */}
+      {/* Products */}
       {!loading && !error && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {products.map((item) => (

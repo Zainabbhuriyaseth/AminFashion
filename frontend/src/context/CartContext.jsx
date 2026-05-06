@@ -2,37 +2,58 @@ import { createContext, useContext, useState } from "react";
 
 const CartContext = createContext();
 
+export const useCart = () => useContext(CartContext);
+
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
-  // Add to cart
+  // ✅ Add to cart
   const addToCart = (product) => {
-    const exists = cart.find((item) => item._id === product._id);
+    setCart((prev) => {
+      const exist = prev.find((item) => item._id === product._id);
 
-    if (exists) {
-      setCart(
-        cart.map((item) =>
+      if (exist) {
+        return prev.map((item) =>
           item._id === product._id
             ? { ...item, qty: item.qty + 1 }
             : item
-        )
-      );
-    } else {
-      setCart([...cart, { ...product, qty: 1 }]);
-    }
+        );
+      }
+
+      return [...prev, { ...product, qty: 1 }];
+    });
   };
 
-  // Remove item
+  // ✅ Remove item
   const removeFromCart = (id) => {
-    setCart(cart.filter((item) => item._id !== id));
+    setCart((prev) => prev.filter((item) => item._id !== id));
+  };
+
+  // ✅ UPDATE quantity
+  const updateQty = (id, qty) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item._id === id ? { ...item, qty } : item
+      )
+    );
+  };
+
+  // 🔥 IMPORTANT FIX (THIS WAS MISSING)
+  const clearCart = () => {
+    setCart([]);
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQty,
+        clearCart, // ✅ MUST EXPORT
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
 }
-
-// Custom hook
-export const useCart = () => useContext(CartContext);
