@@ -1,5 +1,8 @@
 import HeroImg from '../assets/hero.png';
+import { useNavigate } from "react-router-dom";
+
 export default function Hero() {
+  const navigate = useNavigate();
   return (
     <div className="relative h-[90vh] flex items-center justify-center text-white">
 
@@ -23,7 +26,10 @@ export default function Hero() {
           Premium Men's Fashion Collection
         </p>
 
-        <button className="mt-6 bg-gold text-black px-6 py-3 rounded hover:scale-105 transition">
+        <button
+          onClick={() => navigate("/shop")}
+          className="mt-6 bg-gold text-black px-6 py-3 rounded hover:scale-105 transition"
+        >
           Shop Now
         </button>
       </div>
